@@ -1,5 +1,6 @@
 package com.wcy.netty.client.handler;
 
+import com.wcy.netty.client.msg.ClientMsgManager;
 import com.wcy.netty.protocol.response.LoginResponsePacket;
 import com.wcy.netty.session.Session;
 import com.wcy.netty.util.SessionUtil;
@@ -13,13 +14,17 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
     protected void channelRead0(ChannelHandlerContext ctx, LoginResponsePacket loginResponsePacket) {
         String userId = loginResponsePacket.getUserId();
         String userName = loginResponsePacket.getUserName();
-
+        String result = "";
         if (loginResponsePacket.isSuccess()) {
-            System.out.println("[" + userName + "]登录成功，userId 为: " + loginResponsePacket.getUserId());
+            result = "[" + userName + "]登录成功，userId 为: " + loginResponsePacket.getUserId();
+            System.out.println(result);
             SessionUtil.bindSession(new Session(userId, userName), ctx.channel());
         } else {
-            System.out.println("[" + userName + "]登录失败，原因：" + loginResponsePacket.getReason());
+            result = "[" + userName + "]登录失败，原因：" + loginResponsePacket.getReason();
+            System.out.println(result);
         }
+
+        ClientMsgManager.putMsg(ctx.channel().toString(),result);
     }
 
     @Override

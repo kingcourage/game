@@ -10,7 +10,7 @@ public class ClientApplication {
     public static void main(String[] args) {
         SpringApplication.run(ClientApplication.class, args);
         try {
-            NettyClient.start();
+            new NettyClient().start();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

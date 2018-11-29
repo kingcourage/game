@@ -1,5 +1,7 @@
 package com.wcy.netty.client.handler;
 
+import com.wcy.netty.client.NettyClient;
+import com.wcy.netty.client.msg.ClientMsgManager;
 import com.wcy.netty.protocol.response.JoinRoomResponsePacket;
 import com.wcy.netty.protocol.response.LogoutResponsePacket;
 import com.wcy.netty.util.SessionUtil;
@@ -12,9 +14,12 @@ public class JoinRoomResponseHandler extends SimpleChannelInboundHandler<JoinRoo
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, JoinRoomResponsePacket msg) throws Exception {
         if(msg.isSuccess()){
-            log.info("{}加入成功",msg.getUserName());
+            String result = msg.getUserName()+"加入成功";
+            log.info(result);
+            ClientMsgManager.putMsg(ctx.channel().toString(),result);
         }else{
             log.info("加入失败，原因:{}",msg.getReason());
         }
+
     }
 }

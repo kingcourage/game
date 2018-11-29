@@ -39,4 +39,10 @@ public class IMHandler extends SimpleChannelInboundHandler<Packet> {
         log.info("收到消息", JSONObject.toJSONString(packet));
         handlerMap.get(packet.getCommand()).channelRead(ctx, packet);
     }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        log.info("连接断开");
+        super.channelInactive(ctx);
+    }
 }
