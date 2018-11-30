@@ -52,4 +52,8 @@ public interface Command {
     Byte ROOM_USER_REQUEST = 25;
 
     Byte ROOM_USER_RESPONSE = 26;
+
+    Byte WX_MESSAGE_REQUEST = 27;
+
+    Byte WX_MESSAGE_RESPONSE = 28;
 }

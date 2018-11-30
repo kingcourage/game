@@ -8,22 +8,23 @@ import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpMessageHandler;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlOutImageMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
-import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMusicMessage;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
-
-public class DemoMusicHandler implements WxMpMessageHandler {
+@Component
+public class ImageHandler implements WxMpMessageHandler {
   @Override
   public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context,
                                   WxMpService wxMpService, WxSessionManager sessionManager) {
     try {
       WxMediaUploadResult wxMediaUploadResult = wxMpService.getMaterialService()
-        .mediaUpload(WxConsts.MediaFileType.VOICE, TestConstants.FILE_MP3, ClassLoader.getSystemResourceAsStream("file/mm.mp3"));
-      WxMpXmlOutMusicMessage m
-        = WxMpXmlOutMusicMessage
-        .MUSIC()
-        .thumbMediaId(wxMediaUploadResult.getMediaId())
+        .mediaUpload(WxConsts.MediaFileType.IMAGE, TestConstants.FILE_JPG, ClassLoader.getSystemResourceAsStream("file/mm.jpeg"));
+      WxMpXmlOutImageMessage m
+        = WxMpXmlOutMessage
+        .IMAGE()
+        .mediaId(wxMediaUploadResult.getMediaId())
         .fromUser(wxMessage.getToUser())
         .toUser(wxMessage.getFromUser())
         .build();

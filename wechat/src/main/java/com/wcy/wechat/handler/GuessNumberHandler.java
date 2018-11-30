@@ -9,12 +9,14 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.Random;
 import java.util.regex.Pattern;
 
-public class DemoGuessNumberHandler implements WxMpMessageHandler, WxMpMessageMatcher {
+@Component
+public class GuessNumberHandler implements WxMpMessageHandler, WxMpMessageMatcher {
 
   private Random random = new Random();
 
