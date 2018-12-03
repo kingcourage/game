@@ -45,6 +45,7 @@ public class SendMessage{
                           .content(msg)
                           .build();
                   try {
+                     log.info("给微信发送消息"+msg);
                      wxMpServiceHttpClient.getKefuService().sendKefuMessage(m);
                   } catch (WxErrorException e) {
                      e.printStackTrace();

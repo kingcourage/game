@@ -3,7 +3,6 @@ package com.wcy.wechat.service;
 import com.wcy.wechat.handler.*;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
-import me.chanjar.weixin.mp.api.WxMpMessageHandler;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.impl.WxMpServiceHttpClientImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +63,7 @@ public class WxServiceConfig {
         WxMpMessageRouter wxMpMessageRouter = new WxMpMessageRouter(wxMpServiceHttpClient);
         wxMpMessageRouter.rule().handler(logHandler).next()
                 .rule().msgType(WxConsts.XmlMsgType.TEXT).matcher(guessNumberHandler).handler(guessNumberHandler).end()
-                .rule().msgType(WxConsts.XmlMsgType.TEXT).matcher(zjhHandler).handler(zjhHandler).end()
+                .rule().msgType(WxConsts.XmlMsgType.TEXT).handler(zjhHandler).end()
                 .rule().async(false).content("哈哈").handler(textHandler).end()
                 .rule().async(false).content("图片").handler(imageHandler).end()
                 .rule().async(false).content("oauth").handler(oauth2handler).end()

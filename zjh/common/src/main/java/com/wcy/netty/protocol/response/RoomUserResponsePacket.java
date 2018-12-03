@@ -4,6 +4,7 @@ import com.wcy.netty.protocol.Packet;
 import com.wcy.zjh.model.Player;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Set;
 
 import static com.wcy.netty.protocol.command.Command.ROOM_USER_RESPONSE;
@@ -13,7 +14,7 @@ public class RoomUserResponsePacket extends Packet {
 
     private boolean success;
     private String message;
-    private Set<Player> playerList;
+    private List<Player> playerList;
 
     @Override
     public Byte getCommand() {

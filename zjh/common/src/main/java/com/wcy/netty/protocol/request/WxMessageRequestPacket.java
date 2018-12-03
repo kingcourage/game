@@ -8,9 +8,7 @@ import static com.wcy.netty.protocol.command.Command.WX_MESSAGE_REQUEST;
 @Data
 public class WxMessageRequestPacket extends Packet {
 
-    private String fromUserName;
-
-    private String fromUserId;
+    private String packetId;
 
     private String message;
 

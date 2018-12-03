@@ -6,7 +6,7 @@ package com.wcy.wechat.common;
  * Created by Binary Wang on 2017-3-9.
  * </pre>
  */
-public class TestConstants {
+public class Constants {
   ///////////////////////
   // 文件类型
   ///////////////////////

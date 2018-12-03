@@ -3,6 +3,7 @@ package com.wcy.netty.client;
 import com.wcy.netty.client.console.ConsoleCommandManager;
 import com.wcy.netty.client.console.LoginConsoleCommand;
 import com.wcy.netty.client.handler.*;
+import com.wcy.netty.client.msg.ClientMsgManager;
 import com.wcy.netty.codec.PacketDecoder;
 import com.wcy.netty.codec.PacketEncoder;
 import com.wcy.netty.codec.Spliter;
@@ -69,6 +70,7 @@ public class NettyClient {
                         ch.pipeline().addLast(new ExitRoomResponseHandler());
                         ch.pipeline().addLast(new RoomListResponseHandler());
                         ch.pipeline().addLast(new RoomUserResponseHandler());
+                        ch.pipeline().addLast(new WxMessageResponseHandler());
 
                         // 登出响应处理器
                         ch.pipeline().addLast(new LogoutResponseHandler());
@@ -90,7 +92,7 @@ public class NettyClient {
             if(future.isSuccess()){
                 System.out.println(new Date() + ": 连接成功，启动控制台线程……");
                 channel = ((ChannelFuture) future).channel();
-               // startConsoleThread(channel);
+                startConsoleThread(channel);
             }else if(retry == 0){
                 System.err.println("重试次数已经用完，放弃连接！");
             }else{
@@ -103,6 +105,7 @@ public class NettyClient {
                 bootstrap.config().group().schedule(()->
                     connect(bootstrap,host,port,retry-1),delay, TimeUnit.SECONDS);
                 }
+            startConsoleThread(channel);
         });
     }
 
@@ -121,4 +124,11 @@ public class NettyClient {
         }).start();
     }
 
+    public static void main(String[] args) {
+        try {
+            new NettyClient().start();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }

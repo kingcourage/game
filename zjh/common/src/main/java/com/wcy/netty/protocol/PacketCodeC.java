@@ -45,7 +45,7 @@ public class PacketCodeC {
         packetTypeMap.put(ROOM_LIST_RESPONSE, RoomListResponsePacket.class);
         packetTypeMap.put(ROOM_USER_REQUEST, RoomUserRequestPacket.class);
         packetTypeMap.put(ROOM_USER_RESPONSE, RoomUserResponsePacket.class);
-        packetTypeMap.put(WX_MESSAGE_REQUEST, WxMessageResponsePacket.class);
+        packetTypeMap.put(WX_MESSAGE_REQUEST, WxMessageRequestPacket.class);
         packetTypeMap.put(WX_MESSAGE_RESPONSE, WxMessageResponsePacket.class);
 
 

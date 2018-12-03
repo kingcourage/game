@@ -2,6 +2,7 @@ package com.wcy.netty.server.handler;
 
 import com.wcy.netty.protocol.request.LoginRequestPacket;
 import com.wcy.netty.protocol.response.LoginResponsePacket;
+import com.wcy.netty.protocol.response.WxMessageResponsePacket;
 import com.wcy.netty.session.Session;
 import com.wcy.netty.util.SessionUtil;
 import io.netty.channel.ChannelHandler;
@@ -24,6 +25,11 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
 
         //登录响应
         ctx.channel().writeAndFlush(login(loginRequestPacket, ctx));
+
+        WxMessageResponsePacket wxMessageResponsePacket = new WxMessageResponsePacket();
+        wxMessageResponsePacket.setMessage("菜单:\n加入房间:xxx(房间id)\n房间列表");
+        ctx.channel().writeAndFlush(wxMessageResponsePacket);
+
     }
 
     private boolean valid(LoginRequestPacket loginRequestPacket) {

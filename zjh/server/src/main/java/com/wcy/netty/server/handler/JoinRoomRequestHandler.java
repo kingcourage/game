@@ -2,6 +2,7 @@ package com.wcy.netty.server.handler;
 
 import com.wcy.netty.protocol.request.JoinRoomRequestPacket;
 import com.wcy.netty.protocol.response.JoinRoomResponsePacket;
+import com.wcy.netty.protocol.response.WxMessageResponsePacket;
 import com.wcy.netty.session.Session;
 import com.wcy.netty.util.IDUtil;
 import com.wcy.netty.util.SessionUtil;
@@ -40,13 +41,18 @@ public class JoinRoomRequestHandler extends SimpleChannelInboundHandler<JoinRoom
                 String roomName = joinRoomRequestPacket.getRoomName();
                 Room room = new Room(roomId);
                 room.setRoomName(roomName);
-                RoomManager.addRoom(room);
+                RoomManager.INSTRANCE.addRoom(room);
                 //初始化房间的channelGroup
                 ChannelGroup channelGroup = new DefaultChannelGroup(ctx.executor());
-                RoomManager.addChannelGroup(roomId,channelGroup);
+                RoomManager.INSTRANCE.addChannelGroup(roomId,channelGroup);
+            }
+            if(RoomManager.INSTRANCE.getChannelGroup(roomId) == null){
+                WxMessageResponsePacket wxMessageResponsePacket = new WxMessageResponsePacket();
+                wxMessageResponsePacket.setMessage("房间不存在");
+                ctx.channel().writeAndFlush(wxMessageResponsePacket);
             }
                 //选择房间 直接加入
-            RoomManager.getChannelGroup(roomId).add(ctx.channel());
+            RoomManager.INSTRANCE.getChannelGroup(roomId).add(ctx.channel());
             UserManager.joinRoom(player,roomId);
             joinRoomResponsePacket.setSuccess(true);
             joinRoomResponsePacket.setUserName(player.getUserName());
@@ -56,7 +62,7 @@ public class JoinRoomRequestHandler extends SimpleChannelInboundHandler<JoinRoom
             e.printStackTrace();
         }
 
-        RoomManager.getChannelGroup(roomId).writeAndFlush(joinRoomResponsePacket);
+        RoomManager.INSTRANCE.getChannelGroup(roomId).writeAndFlush(joinRoomResponsePacket);
     }
 
 

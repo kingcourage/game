@@ -14,10 +14,10 @@ public class UserManager {
             exitRoom(player.getUserId());
         }
         userRoomMap.put(player.getUserId(),roomId);
-        RoomManager.joinRoom(roomId,player);
+        RoomManager.INSTRANCE.joinRoom(roomId,player);
     }
 
-    public static String getRoom(String userId){
+    public static String getRoomId(String userId){
         return userRoomMap.get(userId);
     }
 
@@ -27,6 +27,6 @@ public class UserManager {
      */
     public static void exitRoom(String userId){
         String roomId = userRoomMap.get(userId);
-        RoomManager.removeUser(roomId,userId);
+        RoomManager.INSTRANCE.removeUser(roomId,userId);
     }
 }

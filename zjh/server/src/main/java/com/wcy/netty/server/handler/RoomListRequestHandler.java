@@ -15,7 +15,7 @@ public class RoomListRequestHandler extends SimpleChannelInboundHandler<RoomList
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RoomListRequestPacket roomListRequestPacket) throws Exception {
         RoomListResponsePacket roomListResponsePacket = new RoomListResponsePacket();
-        roomListResponsePacket.setRoomList(RoomManager.getRoomList());
+        roomListResponsePacket.setRoomList(RoomManager.INSTRANCE.getRoomList());
         roomListResponsePacket.setSuccess(true);
         ctx.channel().writeAndFlush(roomListResponsePacket);
     }

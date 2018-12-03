@@ -1,6 +1,6 @@
 package com.wcy.wechat.handler;
 
-import com.wcy.wechat.common.TestConstants;
+import com.wcy.wechat.common.Constants;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -21,7 +21,7 @@ public class MusicHandler implements WxMpMessageHandler {
                                   WxMpService wxMpService, WxSessionManager sessionManager) {
     try {
       WxMediaUploadResult wxMediaUploadResult = wxMpService.getMaterialService()
-        .mediaUpload(WxConsts.MediaFileType.VOICE, TestConstants.FILE_MP3, ClassLoader.getSystemResourceAsStream("file/mm.mp3"));
+        .mediaUpload(WxConsts.MediaFileType.VOICE, Constants.FILE_MP3, ClassLoader.getSystemResourceAsStream("file/mm.mp3"));
       WxMpXmlOutMusicMessage m
         = WxMpXmlOutMusicMessage
         .MUSIC()

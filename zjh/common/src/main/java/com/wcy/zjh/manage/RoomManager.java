@@ -1,6 +1,7 @@
 package com.wcy.zjh.manage;
 
 import com.wcy.zjh.exception.BusiException;
+import com.wcy.zjh.model.Game;
 import com.wcy.zjh.model.Player;
 import com.wcy.zjh.model.Room;
 import io.netty.channel.group.ChannelGroup;
@@ -8,18 +9,32 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class RoomManager {
-    private static Map<String, Room> roomMap = new ConcurrentHashMap();
-    private static Map<String, Set<Player>> roomUserMap = new ConcurrentHashMap<>();
-    private static Map<String,ChannelGroup> roomChannelGroup = new HashMap<>();
+    public static RoomManager INSTRANCE = new RoomManager();
+    private  Map<String, Room> roomMap;
+    private  Map<String, List<Player>> roomUserMap;
+    private  Map<String,ChannelGroup> roomChannelGroup;
+    private RoomManager(){
+        roomMap = new ConcurrentHashMap();
+        roomUserMap = new ConcurrentHashMap<>();
+        roomChannelGroup = new HashMap<>();
+        ExecutorService cacheThreadPool = Executors.newCachedThreadPool();
+        cacheThreadPool.execute(()->{
+            checkRoomUserCounZero();
+        });
+    }
+
+
     /**
      * 新建房间
      * @param room
      * @return
      */
-    public static void addRoom(Room room){
+    public  void addRoom(Room room){
         roomMap.put(room.getRoomId(),room);
     }
 
@@ -28,7 +43,7 @@ public class RoomManager {
      * @param roomId
      * @return
      */
-    public static void removeRoom(String roomId){
+    public  void removeRoom(String roomId){
         roomMap.remove(roomId);
     }
 
@@ -37,7 +52,7 @@ public class RoomManager {
      * @param roomId
      * @param player
      */
-    public static void joinRoom(String roomId, Player player){
+    public  void joinRoom(String roomId, Player player){
         Room room = roomMap.get(roomId);
         if(room == null){
             throw new BusiException("房间不存在");
@@ -46,7 +61,7 @@ public class RoomManager {
         if(roomUserMap.containsKey(roomId)){
             roomUserMap.get(roomId).add(player);
         }else{
-            Set<Player> playerList = new HashSet<>();
+            List<Player> playerList = new ArrayList<>();
             playerList.add(player);
             roomUserMap.put(roomId,playerList);
         }
@@ -55,19 +70,19 @@ public class RoomManager {
     /**
      * 获取已有的房间列表
      */
-    public static List<Room> getRoomList(){
+    public  List<Room> getRoomList(){
         return roomMap.values().stream().collect(Collectors.toList());
     }
 
     /**
      * 从房间踢出玩家
      */
-    public static void removeUser(String roomId,String userId){
-        Set<Player> playerSet = roomUserMap.get(roomId);
-        if(!CollectionUtils.isEmpty(playerSet)) {
-            for (Player player : playerSet) {
+    public  void removeUser(String roomId,String userId){
+        List<Player> playerList = roomUserMap.get(roomId);
+        if(!CollectionUtils.isEmpty(playerList)) {
+            for (Player player : playerList) {
                 if (userId.equals(player.getUserId())) ;
-                playerSet.remove(player);
+                playerList.remove(player);
                 break;
             }
         }
@@ -77,15 +92,36 @@ public class RoomManager {
      * 获取房间的玩家列表
      * @return
      */
-    public static Set<Player> getPlayerList(String roomId){
+    public  List<Player> getPlayerList(String roomId){
         return  roomUserMap.get(roomId);
     }
 
-    public static void addChannelGroup(String roomId,ChannelGroup channelGroup){
+    public  void addChannelGroup(String roomId,ChannelGroup channelGroup){
         roomChannelGroup.put(roomId,channelGroup);
     }
 
-    public static ChannelGroup getChannelGroup(String roomId){
+    public  ChannelGroup getChannelGroup(String roomId){
       return  roomChannelGroup.get(roomId);
+    }
+
+    public  void checkRoomUserCounZero() {
+        //启动房间回收检测
+        while (true) {
+            if(roomMap.keySet() != null && roomMap.keySet().size()>0){
+                roomMap.keySet().stream().forEach(roomId -> {
+                    if (getPlayerList(roomId) == null || getPlayerList(roomId).size() < 1) {
+                        //系统回收房间
+                        Room room = roomMap.get(roomId);
+                        roomMap.remove(roomId);
+                        System.out.println("系统回收房间" + room);
+                    }
+                });
+            }
+            try {
+                Thread.sleep(3*1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

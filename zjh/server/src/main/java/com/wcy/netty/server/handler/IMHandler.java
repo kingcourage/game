@@ -32,6 +32,7 @@ public class IMHandler extends SimpleChannelInboundHandler<Packet> {
         handlerMap.put(EXIT_ROOM_REQUEST,ExitRoomRequestHandler.INSTANCE);
         handlerMap.put(ROOM_LIST_REQUEST,RoomListRequestHandler.INSTANCE);
         handlerMap.put(ROOM_USER_REQUEST,RoomUserRequestHandler.INSTANCE);
+        handlerMap.put(WX_MESSAGE_REQUEST,WxMessageRequestHandler.INSTANCE);
     }
 
     @Override

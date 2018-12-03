@@ -14,8 +14,8 @@ public class Card{
 
     @Override
     public String toString() {
-        CardSuit cs = CardSuit.values()[suit];
-        CardWeight cw = CardWeight.values()[weight];
-        return "[" + cs + "," + cw + "]";
+        CardSuit cs = CardSuit.values()[suit-1];
+        CardWeight cw = CardWeight.values()[weight-1];
+        return "[" + cs.getName() + cw.getName() + "]";
     }
 }

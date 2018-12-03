@@ -12,13 +12,13 @@ import java.util.Set;
 
 public class RoomUserRequestHandler extends SimpleChannelInboundHandler<RoomUserRequestPacket> {
     public static final RoomUserRequestHandler INSTANCE = new RoomUserRequestHandler();
-    public RoomUserRequestHandler() {
+    private RoomUserRequestHandler() {
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, RoomUserRequestPacket roomUserRequestPacket) throws Exception {
         String roomId = roomUserRequestPacket.getRoomId();
-        Set<Player> playerList =  RoomManager.getPlayerList(roomId);
+        List<Player> playerList =  RoomManager.INSTRANCE.getPlayerList(roomId);
         RoomUserResponsePacket roomUserResponsePacket = new RoomUserResponsePacket();
         roomUserResponsePacket.setPlayerList(playerList);
         roomUserResponsePacket.setSuccess(true);

@@ -24,7 +24,7 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
             System.out.println(result);
         }
 
-        ClientMsgManager.putMsg(ctx.channel().toString(),result);
+        ClientMsgManager.putMsg(ctx.channel().id().asLongText(),result);
     }
 
     @Override

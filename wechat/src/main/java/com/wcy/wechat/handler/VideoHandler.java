@@ -1,6 +1,6 @@
 package com.wcy.wechat.handler;
 
-import com.wcy.wechat.common.TestConstants;
+import com.wcy.wechat.common.Constants;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -21,7 +21,7 @@ public class VideoHandler implements WxMpMessageHandler {
                                   WxMpService wxMpService, WxSessionManager sessionManager) {
     try {
       WxMediaUploadResult wxMediaUploadResult = wxMpService.getMaterialService()
-        .mediaUpload(WxConsts.MediaFileType.VIDEO, TestConstants.FILE_MP4, ClassLoader.getSystemResourceAsStream("file/mm.mp4"));
+        .mediaUpload(WxConsts.MediaFileType.VIDEO, Constants.FILE_MP4, ClassLoader.getSystemResourceAsStream("file/mm.mp4"));
       WxMpXmlOutVideoMessage m
         = WxMpXmlOutVideoMessage
         .VIDEO()

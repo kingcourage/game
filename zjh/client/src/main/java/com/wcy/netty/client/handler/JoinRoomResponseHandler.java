@@ -16,7 +16,7 @@ public class JoinRoomResponseHandler extends SimpleChannelInboundHandler<JoinRoo
         if(msg.isSuccess()){
             String result = msg.getUserName()+"加入成功";
             log.info(result);
-            ClientMsgManager.putMsg(ctx.channel().toString(),result);
+            ClientMsgManager.putMsg(ctx.channel().id().asLongText(),result);
         }else{
             log.info("加入失败，原因:{}",msg.getReason());
         }
